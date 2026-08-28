@@ -38,35 +38,35 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 	getSettingDefinitions(): SettingDefinitionItem<keyof SimpleVaultStatisticsSettings>[] {
 		return [
 			{
-				name: 'Show Vault Name',
+				name: 'Show vault name',
 				control: {
 					type: 'toggle',
 					key: 'showVaultName',
 				},
 			},
 			{
-				name: 'Show Notes Count',
+				name: 'Show notes count',
 				control: {
 					type: 'toggle',
 					key: 'showNotesCount',
 				},
 			},
 			{
-				name: 'Show Word Count',
+				name: 'Show word count',
 				control: {
 					type: 'toggle',
 					key: 'showWordCount',
 				},
 			},
 			{
-				name: 'Show Character Count',
+				name: 'Show character count',
 				control: {
 					type: 'toggle',
 					key: 'showCharacterCount',
 				},
 			},
 			{
-				name: 'Count .txt Files As Notes',
+				name: 'Count .txt files as notes',
 				desc: 'If enabled, .txt files will be counted in "note count" instead of "other files count", and their contents will contribute to the word count and character count.',
 				control: {
 					type: 'toggle',
@@ -74,35 +74,35 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 				},
 			},
 			{
-				name: 'Show Other Files Count',
+				name: 'Show other files count',
 				control: {
 					type: 'toggle',
 					key: 'showOtherFilesCount',
 				},
 			},
 			{
-				name: 'Show Folders Count',
+				name: 'Show folders count',
 				control: {
 					type: 'toggle',
 					key: 'showFoldersCount',
 				},
 			},
 			{
-				name: 'Show Links Count',
+				name: 'Show links count',
 				control: {
 					type: 'toggle',
 					key: 'showLinksCount',
 				},
 			},
 			{
-				name: 'Show Tags Count',
+				name: 'Show tags count',
 				control: {
 					type: 'toggle',
 					key: 'showTagsCount',
 				},
 			},
 			{
-				name: 'Show Checked Checkboxes Count',
+				name: 'Show checked checkboxes count',
 				control: {
 					type: 'toggle',
 					key: 'showCheckedCheckboxesCount',
