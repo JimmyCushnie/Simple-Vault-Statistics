@@ -1,9 +1,12 @@
 import { Plugin } from 'obsidian';
 import { DEFAULT_SETTINGS, SimpleVaultStatisticsSettings, SimpleVaultStatisticsSettingsTab } from './settings';
 import { StatisticsModal } from './statistics-modal';
+import { Event } from './event';
 
 export default class SimpleVaultStatistics extends Plugin {
 	settings!: SimpleVaultStatisticsSettings;
+
+	readonly settingsChanged = new Event();
 
 	async onload() {
 		await this.loadSettings();

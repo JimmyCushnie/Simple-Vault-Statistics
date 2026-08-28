@@ -35,6 +35,11 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
+	async setControlValue(key: string, value: unknown): Promise<void> {
+		await super.setControlValue(key, value);
+		this.plugin.settingsChanged.invoke();
+	}
+
 	getSettingDefinitions(): SettingDefinitionItem<keyof SimpleVaultStatisticsSettings>[] {
 		return [
 			{

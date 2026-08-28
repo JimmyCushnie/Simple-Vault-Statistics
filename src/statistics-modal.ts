@@ -4,10 +4,13 @@ import { SimpleVaultStatisticsSettings } from './settings';
 import { scanVault } from './scanner';
 import { VaultCounts } from './scanner';
 
-/** Shows vault statistics, scanning the vault while the modal is open. */
 export class StatisticsModal extends Modal {
 	private readonly plugin: SimpleVaultStatistics;
-	private readonly scanAbortController = new AbortController();
+	private scanAbortController = new AbortController();
+
+	private readonly rescan = (): void => {
+		void this.scanAndShowStatistics();
+	};
 
 	constructor(plugin: SimpleVaultStatistics) {
 		super(plugin.app);
@@ -16,19 +19,32 @@ export class StatisticsModal extends Modal {
 	}
 
 	override async onOpen(): Promise<void> {
-		this.setContent('Loading...'); // Placeholder for if the vault scan takes a long time
+		this.plugin.settingsChanged.addListener(this.rescan);
 
-		const statistics = await scanVault(this.app, this.plugin.settings, this.scanAbortController.signal);
-
-		// Null means the modal was closed part way through the scan.
-		if (statistics !== null) {
-			this.showStatistics(statistics);
-		}
+		await this.scanAndShowStatistics();
 	}
 
 	override onClose(): void {
+		this.plugin.settingsChanged.removeListener(this.rescan);
 		this.scanAbortController.abort();
 		this.contentEl.empty();
+	}
+
+	private async scanAndShowStatistics(): Promise<void> {
+		this.scanAbortController.abort();
+		this.scanAbortController = new AbortController();
+
+		// Placeholder for if the scan takes a long time.
+		// Shown on a rescan too, so that a settings change visibly registers immediately.
+		this.contentEl.empty();
+		this.setContent('Loading...');
+
+		const statistics = await scanVault(this.app, this.plugin.settings, this.scanAbortController.signal);
+
+		// Null means this scan was abandoned: the modal was closed, or a newer scan replaced it.
+		if (statistics !== null) {
+			this.showStatistics(statistics);
+		}
 	}
 
 	private showStatistics(vaultCounts: VaultCounts): void {
