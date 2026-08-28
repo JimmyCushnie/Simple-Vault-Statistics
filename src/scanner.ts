@@ -143,6 +143,8 @@ async function scanNotes(
 			return;
 		}
 
+		// The reason we don't just do all this work on a separate thread is that the Obsidian
+		// APIs we use here only work on the main thread.
 		if (mainThreadHeldMs >= MAX_MAIN_THREAD_HOLD_MS) {
 			await yieldToEventLoop();
 			mainThreadHeldMs = 0;
