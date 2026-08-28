@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "simple-vault-statistics",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "View statistics about your vault.",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
