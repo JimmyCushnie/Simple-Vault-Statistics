@@ -1,5 +1,6 @@
-import { App, Editor, MarkdownView, MarkdownFileInfo, Modal, Notice, Plugin } from 'obsidian';
+import { Plugin } from 'obsidian';
 import { DEFAULT_SETTINGS, SimpleVaultStatisticsSettings, SimpleVaultStatisticsSettingsTab } from './settings';
+import { StatisticsModal } from './statistics-modal';
 
 export default class SimpleVaultStatistics extends Plugin {
 	settings!: SimpleVaultStatisticsSettings;
@@ -10,14 +11,14 @@ export default class SimpleVaultStatistics extends Plugin {
 		this.addSettingTab(new SimpleVaultStatisticsSettingsTab(this.app, this));
 
 		this.addRibbonIcon('chart-column', 'Open vault statistics', (_evt: MouseEvent) => {
-			new StatisticsModal(this.app).open();
+			new StatisticsModal(this).open();
 		});
 
 		this.addCommand({
 			id: 'open-vault-statistics',
 			name: 'Open vault statistics',
 			callback: () => {
-				new StatisticsModal(this.app).open();
+				new StatisticsModal(this).open();
 			},
 		});
 	}
@@ -32,12 +33,5 @@ export default class SimpleVaultStatistics extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-	}
-}
-
-class StatisticsModal extends Modal {
-	constructor(app: App) {
-		super(app);
-		this.setContent('Modal content goes here');
 	}
 }
