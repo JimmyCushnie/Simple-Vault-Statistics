@@ -13,13 +13,13 @@ export default class SimpleVaultStatistics extends Plugin {
 
 		this.addSettingTab(new SimpleVaultStatisticsSettingsTab(this.app, this));
 
-		this.addRibbonIcon('chart-column', 'Open vault statistics', (_evt: MouseEvent) => {
+		this.addRibbonIcon('chart-column', 'Show vault statistics', (_evt: MouseEvent) => {
 			new StatisticsModal(this).open();
 		});
 
 		this.addCommand({
-			id: 'open-vault-statistics',
-			name: 'Open vault statistics',
+			id: 'show-vault-statistics',
+			name: 'Show vault statistics',
 			callback: () => {
 				new StatisticsModal(this).open();
 			},
