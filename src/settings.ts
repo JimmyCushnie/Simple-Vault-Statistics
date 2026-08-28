@@ -7,8 +7,8 @@ export interface SimpleVaultStatisticsSettings {
 	showWordCount: boolean;
 	showCharacterCount: boolean;
 	txtFilesCountAsNotes: boolean;
-	showOtherFilesCount: boolean;
 	showFoldersCount: boolean;
+	showOtherFilesCount: boolean;
 	showLinksCount: boolean;
 	showTagsCount: boolean;
 	showCheckedCheckboxesCount: boolean;
@@ -20,8 +20,8 @@ export const DEFAULT_SETTINGS: SimpleVaultStatisticsSettings = {
 	showWordCount: true,
 	showCharacterCount: false,
 	txtFilesCountAsNotes: false,
-	showOtherFilesCount: true,
 	showFoldersCount: false,
+	showOtherFilesCount: true,
 	showLinksCount: false,
 	showTagsCount: false,
 	showCheckedCheckboxesCount: false,
@@ -79,17 +79,17 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 				},
 			},
 			{
-				name: 'Show other files count',
-				control: {
-					type: 'toggle',
-					key: 'showOtherFilesCount',
-				},
-			},
-			{
 				name: 'Show folders count',
 				control: {
 					type: 'toggle',
 					key: 'showFoldersCount',
+				},
+			},
+			{
+				name: 'Show other files count',
+				control: {
+					type: 'toggle',
+					key: 'showOtherFilesCount',
 				},
 			},
 			{

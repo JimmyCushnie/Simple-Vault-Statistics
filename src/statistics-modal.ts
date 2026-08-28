@@ -63,8 +63,8 @@ export class StatisticsModal extends Modal {
 		addLine(settings.showNotesCount, vaultCounts.notes, 'note', 'notes');
 		addLine(settings.showWordCount, vaultCounts.words, 'word', 'words');
 		addLine(settings.showCharacterCount, vaultCounts.characters, 'character', 'characters');
-		addLine(settings.showOtherFilesCount, vaultCounts.otherFiles, 'other file', 'other files');
 		addLine(settings.showFoldersCount, vaultCounts.folders, 'folder', 'folders');
+		addLine(settings.showOtherFilesCount, vaultCounts.otherFiles, 'other file', 'other files');
 		addLine(settings.showLinksCount, vaultCounts.links, 'link', 'links');
 		addLine(settings.showTagsCount, vaultCounts.tags, 'tag', 'tags');
 		addLine(
