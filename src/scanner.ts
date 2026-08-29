@@ -1,5 +1,6 @@
 import { App, CachedMetadata, TFile, Vault, parseFrontMatterTags } from 'obsidian';
 import { SimpleVaultStatisticsSettings } from './settings';
+import { countExternalLinks } from './external-links';
 
 /**
  * How many notes to read from disk at once. Reads are I/O bound, so overlapping them is a
@@ -27,7 +28,8 @@ export interface VaultCounts {
 	characters: number;
 	otherFiles: number;
 	folders: number;
-	links: number;
+	internalLinks: number;
+	externalLinks: number;
 	tags: number;
 	checkedCheckboxes: number;
 }
@@ -48,7 +50,8 @@ export async function scanVault(
 		characters: 0,
 		otherFiles: 0,
 		folders: 0,
-		links: 0,
+		internalLinks: 0,
+		externalLinks: 0,
 		tags: 0,
 		checkedCheckboxes: 0,
 	};
@@ -96,14 +99,8 @@ async function scanNotes(
 	stats: VaultCounts,
 	signal: AbortSignal,
 ): Promise<void> {
-	const needsContent = settings.showWordCount || settings.showCharacterCount;
-	const needsMetadata = settings.showLinksCount || settings.showTagsCount || settings.showCheckedCheckboxesCount;
-	if (!needsContent && !needsMetadata) {
-		return;
-	}
+	const needsContent = settings.showWordCount || settings.showCharacterCount || settings.showExternalLinksCount;
 
-	// Reading is by far the most expensive part of a scan, so when note contents are needed
-	// anyway the metadata is collected in the same pass rather than a second one.
 	const batchSize = needsContent ? READ_BATCH_SIZE : METADATA_BATCH_SIZE;
 	let mainThreadHeldMs = 0;
 
@@ -121,8 +118,9 @@ async function scanNotes(
 		const countingStartedAt = performance.now();
 		for (const [i, note] of batch.entries()) {
 			const cache = app.metadataCache.getFileCache(note);
-			const content = contents?.[i] ?? null;
+			if (cache !== null) countStatisticsFromMetadata(cache, settings, stats);
 
+			const content = contents?.[i] ?? null;
 			if (content !== null) {
 				if (settings.showCharacterCount) {
 					stats.characters += content.length;
@@ -131,10 +129,9 @@ async function scanNotes(
 					const bodyStart = cache?.frontmatterPosition?.end.offset ?? 0;
 					stats.words += countWords(content, bodyStart);
 				}
-			}
-
-			if (needsMetadata && cache !== null) {
-				countStatisticsFromMetadata(cache, settings, stats);
+				if (settings.showExternalLinksCount) {
+					stats.externalLinks += countExternalLinks(content, note.extension === 'md' ? cache : null);
+				}
 			}
 		}
 		mainThreadHeldMs += performance.now() - countingStartedAt;
@@ -152,19 +149,15 @@ async function scanNotes(
 	}
 }
 
-/**
- * Adds one note's link, tag, and checkbox counts. These all come from Obsidian's metadata
- * cache, which is already in memory, so they cost no file reads.
- */
 function countStatisticsFromMetadata(
 	cache: CachedMetadata,
 	settings: SimpleVaultStatisticsSettings,
 	stats: VaultCounts,
 ): void {
-	if (settings.showLinksCount) {
-		stats.links += cache.links?.length ?? 0;
-		stats.links += cache.frontmatterLinks?.length ?? 0;
-		stats.links += cache.embeds?.length ?? 0;
+	if (settings.showInternalLinksCount) {
+		stats.internalLinks += cache.links?.length ?? 0;
+		stats.internalLinks += cache.frontmatterLinks?.length ?? 0;
+		stats.internalLinks += cache.embeds?.length ?? 0;
 	}
 
 	if (settings.showTagsCount) {
@@ -197,7 +190,7 @@ function yieldToEventLoop(): Promise<void> {
  * Counts whitespace-separated words in `text`, starting at `start`.
  */
 function countWords(text: string, start: number): number {
-	//This deliberately avoids `split()` and regexes. On a vault with tens of thousands of
+	// This deliberately avoids `split()` and regexes. On a vault with tens of thousands of
 	// notes those allocate an array per note and dominate the scan. This is much faster.
 
 	const length = text.length;

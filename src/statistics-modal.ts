@@ -65,7 +65,8 @@ export class StatisticsModal extends Modal {
 		addLine(settings.showCharacterCount, vaultCounts.characters, 'character', 'characters');
 		addLine(settings.showFoldersCount, vaultCounts.folders, 'folder', 'folders');
 		addLine(settings.showOtherFilesCount, vaultCounts.otherFiles, 'other file', 'other files');
-		addLine(settings.showLinksCount, vaultCounts.links, 'link', 'links');
+		addLine(settings.showInternalLinksCount, vaultCounts.internalLinks, 'internal link', 'internal links');
+		addLine(settings.showExternalLinksCount, vaultCounts.externalLinks, 'external link', 'external links');
 		addLine(settings.showTagsCount, vaultCounts.tags, 'tag', 'tags');
 		addLine(
 			settings.showCheckedCheckboxesCount,
