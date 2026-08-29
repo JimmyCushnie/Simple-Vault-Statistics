@@ -1,7 +1,7 @@
 {
 	"id": "simple-vault-statistics",
 	"name": "Simple Vault Statistics",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"minAppVersion": "1.13.7",
 	"description": "View statistics about your vault.",
 	"author": "Jimmy Cushnie",
