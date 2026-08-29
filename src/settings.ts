@@ -46,6 +46,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 		return [
 			{
 				name: 'Show vault name',
+				desc: 'Shows the name of your vault as a small header above the statistics.',
 				control: {
 					type: 'toggle',
 					key: 'showVaultName',
@@ -53,6 +54,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show notes count',
+				desc: 'Shows the total number of notes in your vault.',
 				control: {
 					type: 'toggle',
 					key: 'showNotesCount',
@@ -60,6 +62,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show word count',
+				desc: 'Shows the total number of words in all the notes in your vault. Does not count words in frontmatter blocks.',
 				control: {
 					type: 'toggle',
 					key: 'showWordCount',
@@ -67,6 +70,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show character count',
+				desc: 'Shows the total number of characters in all the notes in your vault, including characters in frontmatter blocks.',
 				control: {
 					type: 'toggle',
 					key: 'showCharacterCount',
@@ -82,6 +86,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show folders count',
+				desc: 'Shows the total number of folders in your vault.',
 				control: {
 					type: 'toggle',
 					key: 'showFoldersCount',
@@ -89,6 +94,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show other files count',
+				desc: 'Shows the total number of non-note files in your vault, such as images, PDFs, and canvases.',
 				control: {
 					type: 'toggle',
 					key: 'showOtherFilesCount',
@@ -96,6 +102,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show internal links count',
+				desc: 'Shows the total number of links in all the notes in your vault that point to other files in your vault.',
 				control: {
 					type: 'toggle',
 					key: 'showInternalLinksCount',
@@ -103,6 +110,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show external links count',
+				desc: 'Shows the total number of links in all the notes in your vault that point outside your vault, such as web URLs.',
 				control: {
 					type: 'toggle',
 					key: 'showExternalLinksCount',
@@ -110,6 +118,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show tags count',
+				desc: 'Shows the total number of times a note has been given a tag.',
 				control: {
 					type: 'toggle',
 					key: 'showTagsCount',
@@ -117,6 +126,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 			},
 			{
 				name: 'Show checked checkboxes count',
+				desc: 'Shows the total number of checked checkboxes in all the notes in your vault.',
 				control: {
 					type: 'toggle',
 					key: 'showCheckedCheckboxesCount',
