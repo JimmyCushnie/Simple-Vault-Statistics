@@ -124,11 +124,11 @@ async function scanNotes(
 			const content = contents?.[i] ?? null;
 
 			if (content !== null) {
-				const bodyStart = bodyStartOffset(cache, content);
 				if (settings.showCharacterCount) {
 					stats.characters += content.length;
 				}
 				if (settings.showWordCount) {
+					const bodyStart = cache?.frontmatterPosition?.end.offset ?? 0;
 					stats.words += countWords(content, bodyStart);
 				}
 			}
@@ -180,28 +180,6 @@ function countStatisticsFromMetadata(
 			}
 		}
 	}
-}
-
-/**
- * Offset at which a note's body begins, skipping the frontmatter block so it does not
- * contribute to word and character counts. Returns 0 for notes without frontmatter.
- */
-function bodyStartOffset(cache: CachedMetadata | null, content: string): number {
-	const end = cache?.frontmatterPosition?.end.offset;
-	if (end === undefined) {
-		return 0;
-	}
-
-	// The cached offset lands just after the closing `---`, so step past the line break that
-	// terminates it. Clamped because a stale cache can point past the end of the content.
-	let offset = Math.min(end, content.length);
-	if (content.charCodeAt(offset) === 0x0d) {
-		offset++;
-	}
-	if (content.charCodeAt(offset) === 0x0a) {
-		offset++;
-	}
-	return offset;
 }
 
 /** Hands the main thread back to Obsidian for one turn of the event loop. */
