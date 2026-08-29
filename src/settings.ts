@@ -11,6 +11,7 @@ export interface SimpleVaultStatisticsSettings {
 	showOtherFilesCount: boolean;
 	showInternalLinksCount: boolean;
 	showExternalLinksCount: boolean;
+	showFootnotesCount: boolean;
 	showTagsCount: boolean;
 	showCheckedCheckboxesCount: boolean;
 }
@@ -25,6 +26,7 @@ export const DEFAULT_SETTINGS: SimpleVaultStatisticsSettings = {
 	showOtherFilesCount: true,
 	showInternalLinksCount: false,
 	showExternalLinksCount: false,
+	showFootnotesCount: false,
 	showTagsCount: false,
 	showCheckedCheckboxesCount: false,
 };
@@ -114,6 +116,14 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 				control: {
 					type: 'toggle',
 					key: 'showExternalLinksCount',
+				},
+			},
+			{
+				name: 'Show footnotes count',
+				desc: 'Shows the total number of footnotes in all the notes in your vault.',
+				control: {
+					type: 'toggle',
+					key: 'showFootnotesCount',
 				},
 			},
 			{

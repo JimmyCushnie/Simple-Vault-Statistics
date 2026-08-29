@@ -30,6 +30,7 @@ export interface VaultCounts {
 	folders: number;
 	internalLinks: number;
 	externalLinks: number;
+	footnotes: number;
 	tags: number;
 	checkedCheckboxes: number;
 }
@@ -52,6 +53,7 @@ export async function scanVault(
 		folders: 0,
 		internalLinks: 0,
 		externalLinks: 0,
+		footnotes: 0,
 		tags: 0,
 		checkedCheckboxes: 0,
 	};
@@ -158,6 +160,10 @@ function countStatisticsFromMetadata(
 		stats.internalLinks += cache.links?.length ?? 0;
 		stats.internalLinks += cache.frontmatterLinks?.length ?? 0;
 		stats.internalLinks += cache.embeds?.length ?? 0;
+	}
+
+	if (settings.showFootnotesCount) {
+		stats.footnotes += cache.footnotes?.length ?? 0;
 	}
 
 	if (settings.showTagsCount) {
