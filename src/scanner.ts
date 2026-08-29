@@ -190,41 +190,49 @@ function yieldToEventLoop(): Promise<void> {
  * Counts whitespace-separated words in `text`, starting at `start`.
  */
 function countWords(text: string, start: number): number {
-	// This deliberately avoids `split()` and regexes. On a vault with tens of thousands of
-	// notes those allocate an array per note and dominate the scan. This is much faster.
+	// This function runs on every single character in every single note in the vault so it has
+	// to be really fast.
+	// Don't make changes without measuring performance!
 
 	const length = text.length;
 	let count = 0;
-	let inWord = false;
+
+	// Start as true so a word beginning at `start` is counted.
+	let previousWasSpace = 1;
 
 	for (let i = start; i < length; i++) {
-		if (isWhitespace(text.charCodeAt(i))) {
-			inWord = false;
-		} else if (!inWord) {
-			inWord = true;
-			count++;
-		}
+		const code = text.charCodeAt(i);
+		const isSpace = code < 0x80 ? (ASCII_WHITESPACE[code] as number) : rareWhitespace(code);
+
+		// Branchless version of `if (previousWasSpace && !isSpace) count++`. Word boundaries
+		// are irregular, so a branch here will usually mispredict.
+		count += previousWasSpace & (1 - isSpace);
+
+		previousWasSpace = isSpace;
 	}
 
 	return count;
+}
 
-	function isWhitespace(code: number): boolean {
-		// Almost every character in a note is ASCII, so check that range first and exit early.
-		if (code < 0x80) {
-			return code === 0x20 || (code >= 0x09 && code <= 0x0d);
-		}
+// Notes are almost completely ASCII, so we use a very fast lookup table where possible.
+// Return a number rather than a boolean to prevent a type conversion in the logic above.
+const ASCII_WHITESPACE = new Uint8Array(0x80);
+for (const code of [0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x20]) {
+	ASCII_WHITESPACE[code] = 1;
+}
 
-		return (
-			code === 0x85 ||
-			code === 0xa0 ||
-			code === 0x1680 ||
-			(code >= 0x2000 && code <= 0x200a) ||
-			code === 0x2028 ||
-			code === 0x2029 ||
-			code === 0x202f ||
-			code === 0x205f ||
-			code === 0x3000 ||
-			code === 0xfeff
-		);
-	}
+function rareWhitespace(code: number): number {
+	const isWhitespace =
+		code === 0x85 ||
+		code === 0xa0 ||
+		code === 0x1680 ||
+		(code >= 0x2000 && code <= 0x200a) ||
+		code === 0x2028 ||
+		code === 0x2029 ||
+		code === 0x202f ||
+		code === 0x205f ||
+		code === 0x3000 ||
+		code === 0xfeff;
+
+	return isWhitespace ? 1 : 0;
 }
