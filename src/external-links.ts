@@ -23,6 +23,10 @@ const SLASH = 0x2f;
  * are counted as well.
  */
 export function countExternalLinks(content: string, cache: CachedMetadata | null): number {
+	// This function runs on every single character in every single note in the vault so it has
+	// to be really fast.
+	// Don't make changes without measuring performance!
+
 	let linksCount = 0;
 	const internalLinkStarts = cache === null ? null : findInternalLinkStarts(cache);
 
