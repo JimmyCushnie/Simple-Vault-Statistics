@@ -126,7 +126,7 @@ async function scanNotes(
 			if (content !== null) {
 				const bodyStart = bodyStartOffset(cache, content);
 				if (settings.showCharacterCount) {
-					stats.characters += content.length - bodyStart;
+					stats.characters += content.length;
 				}
 				if (settings.showWordCount) {
 					stats.words += countWords(content, bodyStart);
