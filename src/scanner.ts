@@ -163,6 +163,7 @@ function countStatisticsFromMetadata(
 ): void {
 	if (settings.showLinksCount) {
 		stats.links += cache.links?.length ?? 0;
+		stats.links += cache.frontmatterLinks?.length ?? 0;
 		stats.links += cache.embeds?.length ?? 0;
 	}
 
