@@ -13,6 +13,7 @@ export interface SimpleVaultStatisticsSettings {
 	showExternalLinksCount: boolean;
 	showFootnotesCount: boolean;
 	showTagsCount: boolean;
+	showUncheckedCheckboxesCount: boolean;
 	showCheckedCheckboxesCount: boolean;
 }
 
@@ -28,6 +29,7 @@ export const DEFAULT_SETTINGS: SimpleVaultStatisticsSettings = {
 	showExternalLinksCount: false,
 	showFootnotesCount: false,
 	showTagsCount: false,
+	showUncheckedCheckboxesCount: false,
 	showCheckedCheckboxesCount: false,
 };
 
@@ -132,6 +134,14 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 				control: {
 					type: 'toggle',
 					key: 'showTagsCount',
+				},
+			},
+			{
+				name: 'Show unchecked checkboxes count',
+				desc: 'Shows the total number of unchecked checkboxes in all the notes in your vault.',
+				control: {
+					type: 'toggle',
+					key: 'showUncheckedCheckboxesCount',
 				},
 			},
 			{

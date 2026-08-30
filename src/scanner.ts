@@ -32,6 +32,7 @@ export interface VaultCounts {
 	externalLinks: number;
 	footnotes: number;
 	tags: number;
+	uncheckedCheckboxes: number;
 	checkedCheckboxes: number;
 }
 
@@ -55,6 +56,7 @@ export async function scanVault(
 		externalLinks: 0,
 		footnotes: 0,
 		tags: 0,
+		uncheckedCheckboxes: 0,
 		checkedCheckboxes: 0,
 	};
 
@@ -171,12 +173,18 @@ function countStatisticsFromMetadata(
 		stats.tags += parseFrontMatterTags(cache.frontmatter ?? null)?.length ?? 0;
 	}
 
-	if (settings.showCheckedCheckboxesCount && cache.listItems !== undefined) {
+	if (
+		(settings.showUncheckedCheckboxesCount || settings.showCheckedCheckboxesCount) &&
+		cache.listItems !== undefined
+	) {
 		for (const item of cache.listItems) {
 			// `task` is undefined for plain list items and `' '` for an unchecked box. Every
 			// other marker ([x], [-], [/], ...) is a checked box.
-			if (item.task !== undefined && item.task !== ' ') {
-				stats.checkedCheckboxes++;
+			if (item.task === undefined) continue;
+			if (item.task === ' ') {
+				if (settings.showUncheckedCheckboxesCount) stats.uncheckedCheckboxes++;
+			} else {
+				if (settings.showCheckedCheckboxesCount) stats.checkedCheckboxes++;
 			}
 		}
 	}

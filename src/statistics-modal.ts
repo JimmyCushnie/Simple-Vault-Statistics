@@ -70,6 +70,12 @@ export class StatisticsModal extends Modal {
 		addLine(settings.showFootnotesCount, vaultCounts.footnotes, 'footnote', 'footnotes');
 		addLine(settings.showTagsCount, vaultCounts.tags, 'tag', 'tags');
 		addLine(
+			settings.showUncheckedCheckboxesCount,
+			vaultCounts.uncheckedCheckboxes,
+			'unchecked checkbox',
+			'unchecked checkboxes',
+		);
+		addLine(
 			settings.showCheckedCheckboxesCount,
 			vaultCounts.checkedCheckboxes,
 			'checked checkbox',
