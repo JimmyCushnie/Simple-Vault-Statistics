@@ -9,7 +9,11 @@ export default class SimpleVaultStatistics extends Plugin {
 	readonly settingsChanged = new Event();
 
 	async onload() {
-		await this.loadSettings();
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			(await this.loadData()) as Partial<SimpleVaultStatisticsSettings>,
+		);
 
 		this.addSettingTab(new SimpleVaultStatisticsSettingsTab(this.app, this));
 
@@ -24,17 +28,5 @@ export default class SimpleVaultStatistics extends Plugin {
 				new StatisticsModal(this).open();
 			},
 		});
-	}
-
-	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			(await this.loadData()) as Partial<SimpleVaultStatisticsSettings>,
-		);
-	}
-
-	async saveSettings() {
-		await this.saveData(this.settings);
 	}
 }
