@@ -32,8 +32,8 @@ export interface VaultCounts {
 	externalLinks: number;
 	footnotes: number;
 	tags: number;
-	uncheckedCheckboxes: number;
 	checkedCheckboxes: number;
+	uncheckedCheckboxes: number;
 }
 
 /**
@@ -56,8 +56,8 @@ export async function scanVault(
 		externalLinks: 0,
 		footnotes: 0,
 		tags: 0,
-		uncheckedCheckboxes: 0,
 		checkedCheckboxes: 0,
+		uncheckedCheckboxes: 0,
 	};
 
 	if (settings.showFoldersCount) {
@@ -174,7 +174,7 @@ function countStatisticsFromMetadata(
 	}
 
 	if (
-		(settings.showUncheckedCheckboxesCount || settings.showCheckedCheckboxesCount) &&
+		(settings.showCheckedCheckboxesCount || settings.showUncheckedCheckboxesCount) &&
 		cache.listItems !== undefined
 	) {
 		for (const item of cache.listItems) {
