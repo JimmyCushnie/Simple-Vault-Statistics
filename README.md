@@ -12,8 +12,19 @@ After installing and enabling the plugin, you can open the popup with the button
 
 ## Customizing
 
-You can choose which statistics are shown with the plugin settings page. You can also choose to treat `.txt` files as notes.
+Here are all the settings available in this plugin. You can choose which statistics are shown and the style they are shown in. You can also choose to treat `.txt` files as notes.
 
-![](img/stats-settings.png)
+<details>
+<summary>All settings</summary>
 
-You may edit these settings while the statistics popup is open. Doing so will update the popup.
+<img width="85%" src="img/stats-settings.png" />
+
+</details>
+
+Here's what the different display styles look like:
+
+| Simple                                   | Aligned                                   | Table with averages per note                                   |
+| ---------------------------------------- | ----------------------------------------- | -------------------------------------------------------------- |
+| ![](img/stats-display-option-simple.png) | ![](img/stats-display-option-aligned.png) | ![](img/stats-display-option-table-with-averages-per-note.png) |
+
+You may edit any of the plugin's settings while the statistics popup is open. Doing so will update the popup.
