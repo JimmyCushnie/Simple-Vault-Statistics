@@ -53,29 +53,29 @@ export class StatisticsModal extends Modal {
 	}
 
 	buildStatisticsContent(settings: SimpleVaultStatisticsSettings, vaultCounts: VaultCounts): DocumentFragment {
-		const lines: string[] = [];
-		const addLine = (enabled: boolean, count: number, singular: string, plural: string): void => {
+		const stats: { count: number; labelSingular: string; labelPlural: string }[] = [];
+		const addStat = (enabled: boolean, count: number, singular: string, plural: string): void => {
 			if (enabled) {
-				lines.push(`${count.toLocaleString()} ${count === 1 ? singular : plural}`);
+				stats.push({ count: count, labelSingular: singular, labelPlural: plural });
 			}
 		};
 
-		addLine(settings.showNotesCount, vaultCounts.notes, 'note', 'notes');
-		addLine(settings.showWordCount, vaultCounts.words, 'word', 'words');
-		addLine(settings.showCharacterCount, vaultCounts.characters, 'character', 'characters');
-		addLine(settings.showFoldersCount, vaultCounts.folders, 'folder', 'folders');
-		addLine(settings.showOtherFilesCount, vaultCounts.otherFiles, 'other file', 'other files');
-		addLine(settings.showInternalLinksCount, vaultCounts.internalLinks, 'internal link', 'internal links');
-		addLine(settings.showExternalLinksCount, vaultCounts.externalLinks, 'external link', 'external links');
-		addLine(settings.showFootnotesCount, vaultCounts.footnotes, 'footnote', 'footnotes');
-		addLine(settings.showTagsCount, vaultCounts.tags, 'tag', 'tags');
-		addLine(
+		addStat(settings.showNotesCount, vaultCounts.notes, 'note', 'notes');
+		addStat(settings.showWordCount, vaultCounts.words, 'word', 'words');
+		addStat(settings.showCharacterCount, vaultCounts.characters, 'character', 'characters');
+		addStat(settings.showFoldersCount, vaultCounts.folders, 'folder', 'folders');
+		addStat(settings.showOtherFilesCount, vaultCounts.otherFiles, 'other file', 'other files');
+		addStat(settings.showInternalLinksCount, vaultCounts.internalLinks, 'internal link', 'internal links');
+		addStat(settings.showExternalLinksCount, vaultCounts.externalLinks, 'external link', 'external links');
+		addStat(settings.showFootnotesCount, vaultCounts.footnotes, 'footnote', 'footnotes');
+		addStat(settings.showTagsCount, vaultCounts.tags, 'tag', 'tags');
+		addStat(
 			settings.showCheckedCheckboxesCount,
 			vaultCounts.checkedCheckboxes,
 			'checked checkbox',
 			'checked checkboxes',
 		);
-		addLine(
+		addStat(
 			settings.showUncheckedCheckboxesCount,
 			vaultCounts.uncheckedCheckboxes,
 			'unchecked checkbox',
@@ -87,11 +87,59 @@ export class StatisticsModal extends Modal {
 				content.createEl('h5', { text: this.plugin.app.vault.getName() });
 			}
 
-			for (const line of lines) {
-				content.createDiv({ text: line });
+			if (stats.length > 0) {
+				switch (settings.displayStyle) {
+					case 'simple':
+					default:
+						for (const stat of stats) {
+							content.createDiv({
+								text: `${stat.count.toLocaleString()} ${stat.count === 1 ? stat.labelSingular : stat.labelPlural}`,
+							});
+						}
+						break;
+
+					case 'aligned':
+						{
+							const linesParent = content.createDiv({ cls: 'simple-statistics-aligned-parent' });
+							for (const stat of stats) {
+								linesParent.createSpan({
+									attr: { style: 'text-align: right' },
+									text: stat.count.toLocaleString(),
+								});
+								linesParent.createSpan({
+									attr: { style: 'text-align: left' },
+									text: stat.count === 1 ? stat.labelSingular : stat.labelPlural,
+								});
+							}
+						}
+						break;
+
+					case 'tableWithAveragesPerNote':
+						{
+							const wrapper = content.createDiv({ cls: 'markdown-rendered' }); // Uses Obsidian's standard table css
+							const table = wrapper.createEl('table', { attr: { style: 'margin: 0 auto' } });
+							const tbody = table.createEl('tbody');
+
+							const headerRow = tbody.createEl('tr');
+							headerRow.createEl('th', { text: 'Thing' });
+							headerRow.createEl('th', { text: 'Count', attr: { align: 'right' } });
+							headerRow.createEl('th', { text: 'Average per note', attr: { align: 'right' } });
+
+							for (const stat of stats) {
+								const row = tbody.createEl('tr');
+								row.createEl('td', { text: stat.labelPlural });
+								row.createEl('td', { text: stat.count.toLocaleString(), attr: { align: 'right' } });
+								row.createEl('td', {
+									text: vaultCounts.notes > 0 ? (stat.count / vaultCounts.notes).toFixed(2) : '0.00',
+									attr: { align: 'right' },
+								});
+							}
+						}
+						break;
+				}
 			}
 
-			if (!settings.showVaultName && lines.length === 0) {
+			if (!settings.showVaultName && stats.length === 0) {
 				content.createDiv({
 					text: 'ඞ',
 				});

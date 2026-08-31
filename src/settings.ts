@@ -1,7 +1,16 @@
 import { App, PluginSettingTab, SettingDefinitionItem } from 'obsidian';
 import SimpleVaultStatistics from './main';
 
+export type DisplayStyle = 'simple' | 'aligned' | 'tableWithAveragesPerNote';
+
+const DISPLAY_STYLE_LABELS: Record<DisplayStyle, string> = {
+	simple: 'Simple',
+	aligned: 'Aligned',
+	tableWithAveragesPerNote: 'Table with averages per note',
+};
+
 export interface SimpleVaultStatisticsSettings {
+	displayStyle: DisplayStyle;
 	showVaultName: boolean;
 	showNotesCount: boolean;
 	showWordCount: boolean;
@@ -18,6 +27,7 @@ export interface SimpleVaultStatisticsSettings {
 }
 
 export const DEFAULT_SETTINGS: SimpleVaultStatisticsSettings = {
+	displayStyle: 'simple',
 	showVaultName: true,
 	showNotesCount: true,
 	showWordCount: true,
@@ -48,6 +58,15 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 
 	getSettingDefinitions(): SettingDefinitionItem<keyof SimpleVaultStatisticsSettings>[] {
 		return [
+			{
+				name: 'Display style',
+				desc: 'Controls how statistics are displayed in the popup.',
+				control: {
+					type: 'dropdown',
+					key: 'displayStyle',
+					options: DISPLAY_STYLE_LABELS,
+				},
+			},
 			{
 				name: 'Show vault name',
 				desc: 'Shows the name of your vault as a small header above the statistics.',
