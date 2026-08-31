@@ -4,6 +4,8 @@ This is a plugin for [Obsidian](https://obsidian.md) that adds a simple popup wi
 
 ![](img/stats-popup.png)
 
+[Forum discussion](https://forum.obsidian.md/t/simple-vault-statistics/117842)
+
 
 ## Usage
 
