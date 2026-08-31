@@ -14,6 +14,6 @@
 .simple-statistics-aligned-parent {
 	display: grid;
 	grid-template-columns: 1fr 1fr; /* Equal column widths put the gap in the exact center */
-	column-gap: 0.3em;
+	gap: 0.3em;
 	padding-right: 45px; /* Shift it left of center by a titch */
 }
