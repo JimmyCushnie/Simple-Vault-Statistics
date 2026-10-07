@@ -73,7 +73,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 					},
 					{
 						name: 'Count .txt files as notes',
-						desc: 'If enabled, .txt files will be counted in "note count" instead of "other files count", and their contents will contribute to the word count and character count.',
+						desc: 'If enabled, .txt files will be counted in "note count" instead of "non-note files count", and their contents will contribute to the word count and character count.',
 						control: {
 							type: 'toggle',
 							key: 'txtFilesCountAsNotes',
@@ -126,7 +126,7 @@ export class SimpleVaultStatisticsSettingsTab extends PluginSettingTab {
 						},
 					},
 					{
-						name: 'Show other files count',
+						name: 'Show non-note files count',
 						desc: 'Shows the total number of non-note files in your vault, such as images, PDFs, and canvases.',
 						control: {
 							type: 'toggle',
